@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from .models import Event
+from .models import Event, EventAcceptance
 from .serializers import EventSerializer
 from django.contrib.auth import get_user_model
 
@@ -21,6 +21,10 @@ class EventAcceptAPIView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         event = self.get_object()
-        # Add logic for event acceptance here
-        # For example, you might want to create a record in a separate model that tracks event acceptances
-        return Response({'message': 'Event accepted'}, status=status.HTTP_200_OK)
+        if event.creator == request.user:
+            return Response({'message': 'You cannot accept your own event'}, status=status.HTTP_400_BAD_REQUEST)
+        _, created = EventAcceptance.objects.get_or_create(event=event, user=request.user)
+        if created:
+            return Response({'message': 'Event accepted'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'You have already accepted this event'}, status=status.HTTP_400_BAD_REQUEST)
