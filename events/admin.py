@@ -1,4 +1,10 @@
 from django.contrib import admin
-from .models import Event
+from .models import Event, EventAcceptance
 
-admin.site.register(Event)
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('title', 'description', 'blood_group', 'creator')
+
+@admin.register(EventAcceptance)
+class EventAcceptanceAdmin(admin.ModelAdmin):
+    list_display = ('event', 'user', 'accepted_at')
