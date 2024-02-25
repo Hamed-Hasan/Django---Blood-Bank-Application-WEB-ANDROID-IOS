@@ -7,6 +7,11 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+class AvailableDonorListView(generics.ListAPIView):
+    queryset = DonorProfile.objects.filter(availability=True)
+    serializer_class = DonorProfileSerializer
+    permission_classes = []  # No permission required as it's a public list
+
 class DonorProfileUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = DonorProfile.objects.all()
     serializer_class = DonorProfileSerializer
