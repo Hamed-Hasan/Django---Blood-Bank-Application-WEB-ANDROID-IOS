@@ -1,3 +1,13 @@
-from django.shortcuts import render
+from rest_framework import generics, permissions
+from .models import DonationHistory
+from .serializers import DonationHistorySerializer
+from django.contrib.auth import get_user_model
 
-# Create your views here.
+User = get_user_model()
+
+class DonationHistoryListAPIView(generics.ListAPIView):
+    serializer_class = DonationHistorySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return DonationHistory.objects.filter(donor=self.request.user)
