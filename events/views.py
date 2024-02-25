@@ -1,11 +1,26 @@
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, filters
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from .models import Event, EventAcceptance
 from donation_history.models import DonationHistory
 from .serializers import EventSerializer
+from donation_history.serializers import DonationHistorySerializer
 from django.contrib.auth import get_user_model
-from rest_framework import filters
+
 User = get_user_model()
+
+class DashboardAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        donation_requests = Event.objects.exclude(creator=user)
+        donation_history = DonationHistory.objects.filter(donor=user)
+        
+        return Response({
+            'donation_requests': EventSerializer(donation_requests, many=True).data,
+            'donation_history': DonationHistorySerializer(donation_history, many=True).data
+        })
 
 
 class DonationRequestListView(generics.ListAPIView):
