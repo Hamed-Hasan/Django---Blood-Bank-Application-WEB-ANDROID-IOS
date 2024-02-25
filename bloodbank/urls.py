@@ -10,7 +10,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('donor_profiles/', include('donor_profiles.urls')),
     path('events/', include('events.urls')),
-    # path('donation_history/', include('donation_history.urls')),
+    path('donation_history/', include('donation_history.urls')),
 
 ]
 

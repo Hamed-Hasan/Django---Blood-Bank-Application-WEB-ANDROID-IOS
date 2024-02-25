@@ -10,4 +10,7 @@ class DonationHistoryListAPIView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
+        # print(self.request.user)
         return DonationHistory.objects.filter(donor=self.request.user)
+
+

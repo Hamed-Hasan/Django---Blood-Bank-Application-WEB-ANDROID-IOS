@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from .models import Event, EventAcceptance
+from donation_history.models import DonationHistory
 from .serializers import EventSerializer
 from django.contrib.auth import get_user_model
 
@@ -23,8 +24,18 @@ class EventAcceptAPIView(generics.GenericAPIView):
         event = self.get_object()
         if event.creator == request.user:
             return Response({'message': 'You cannot accept your own event'}, status=status.HTTP_400_BAD_REQUEST)
-        _, created = EventAcceptance.objects.get_or_create(event=event, user=request.user)
-        if created:
-            return Response({'message': 'Event accepted'}, status=status.HTTP_200_OK)
-        else:
+        
+        if EventAcceptance.objects.filter(event=event, user=request.user).exists():
             return Response({'message': 'You have already accepted this event'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        EventAcceptance.objects.create(event=event, user=request.user)
+
+        # Automatically create a DonationHistory record
+        DonationHistory.objects.create(
+            donor=request.user,
+            recipient=event.creator,  # Assuming the event creator is the recipient
+            event=event,
+            status='donated'  # or 'pending' if you want to track when the donation is completed
+        )
+        
+        return Response({'message': 'Event accepted and donation history recorded'}, status=status.HTTP_201_CREATED)
