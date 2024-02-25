@@ -7,6 +7,17 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
+class DonationRequestListView(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Exclude the events created by the user to not show their own requests
+        return Event.objects.exclude(creator=self.request.user)
+
+
 class EventCreateAPIView(generics.CreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
