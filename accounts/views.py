@@ -8,6 +8,7 @@ from django.conf import settings
 
 User = get_user_model()
 
+
 class RegistrationAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
