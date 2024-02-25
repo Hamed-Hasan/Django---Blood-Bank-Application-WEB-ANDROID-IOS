@@ -39,3 +39,17 @@ class EventAcceptAPIView(generics.GenericAPIView):
         )
         
         return Response({'message': 'Event accepted and donation history recorded'}, status=status.HTTP_201_CREATED)
+
+
+
+class EventDetailAPIView(generics.RetrieveAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        event = self.get_object()
+        can_accept = event.creator != request.user and not EventAcceptance.objects.filter(event=event, user=request.user).exists()
+        response.data['can_accept'] = can_accept
+        return response
