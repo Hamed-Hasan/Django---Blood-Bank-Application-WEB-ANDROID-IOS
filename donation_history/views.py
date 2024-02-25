@@ -12,5 +12,6 @@ class DonationHistoryListAPIView(generics.ListAPIView):
     def get_queryset(self):
         # print(self.request.user)
         return DonationHistory.objects.filter(donor=self.request.user)
+        # return DonationHistory.objects.all()
 
 
