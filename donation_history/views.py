@@ -11,6 +11,7 @@ class DonationHistoryListAPIView(generics.ListAPIView):
         # Get donations where the user is either the donor or the recipient
         user = self.request.user
         return DonationHistory.objects.filter(Q(donor=user) | Q(recipient=user))
+
         # return DonationHistory.objects.all()
 
 

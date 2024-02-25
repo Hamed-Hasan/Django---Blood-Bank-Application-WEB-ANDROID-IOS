@@ -44,9 +44,9 @@ class EventAcceptAPIView(generics.GenericAPIView):
         # Automatically create a DonationHistory record
         DonationHistory.objects.create(
             donor=request.user,
-            recipient=event.creator,  # Assuming the event creator is the recipient
+            recipient=event.creator,
             event=event,
-            status='donated'  # or 'pending' if you want to track when the donation is completed
+            status='pending'  # Assume the status is 'pending' until the donation is completed
         )
         
         return Response({'message': 'Event accepted and donation history recorded'}, status=status.HTTP_201_CREATED)
