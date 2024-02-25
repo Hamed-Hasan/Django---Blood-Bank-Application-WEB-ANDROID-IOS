@@ -4,7 +4,7 @@ from .models import Event, EventAcceptance
 from donation_history.models import DonationHistory
 from .serializers import EventSerializer
 from django.contrib.auth import get_user_model
-
+from rest_framework import filters
 User = get_user_model()
 
 
@@ -12,10 +12,14 @@ class DonationRequestListView(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'description', 'blood_group']
+    ordering_fields = ['title', 'blood_group', 'creator__username']
 
     def get_queryset(self):
-        # Exclude the events created by the user to not show their own requests
-        return Event.objects.exclude(creator=self.request.user)
+        user = self.request.user
+        return Event.objects.exclude(creator=user)
+
 
 
 class EventCreateAPIView(generics.CreateAPIView):

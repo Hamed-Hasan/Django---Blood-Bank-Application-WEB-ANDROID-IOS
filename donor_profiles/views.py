@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from rest_framework import filters
 from rest_framework import generics, permissions
 from .models import DonorProfile
 from .serializers import DonorProfileSerializer
@@ -11,6 +11,8 @@ class AvailableDonorListView(generics.ListAPIView):
     queryset = DonorProfile.objects.filter(availability=True)
     serializer_class = DonorProfileSerializer
     permission_classes = []  # No permission required as it's a public list
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['blood_group', 'user__username', 'address']
 
 class DonorProfileUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = DonorProfile.objects.all()
