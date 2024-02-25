@@ -5,9 +5,27 @@ from .serializers import UserSerializer
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.conf import settings
-
+from donor_profiles.models import DonorProfile
+# from .models import User
 User = get_user_model()
 
+
+# class RegistrationAPIView(generics.CreateAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     permission_classes = [permissions.AllowAny]
+
+#     def perform_create(self, serializer):
+#         user = serializer.save()
+#         token = user.generate_verification_token()
+#         verification_url = self.request.build_absolute_uri(reverse('verify_email')) + f"?token={token}"
+#         send_mail(
+#             'Verify your email',
+#             f'Please click the following link to verify your email: {verification_url}',
+#             settings.DEFAULT_FROM_EMAIL,
+#             [user.email],
+#             fail_silently=False,
+#         )
 
 class RegistrationAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -24,6 +42,17 @@ class RegistrationAPIView(generics.CreateAPIView):
             settings.DEFAULT_FROM_EMAIL,
             [user.email],
             fail_silently=False,
+        )
+        
+        # Create a DonorProfile for the new user with default values
+        DonorProfile.objects.create(
+            user=user,
+            age=18,  # Assuming 18 is the minimum age for a donor
+            address='',  # Empty string as a placeholder for the address
+            last_donation_date=None,  # None indicates no donations have been made yet
+            availability=True,  # Assuming new users are available by default
+            blood_group='Unknown',  #  may want to set a default or prompt users to update this field
+            # No need to the identification_document, it should be uploaded by the user
         )
 
 class LoginAPIView(generics.GenericAPIView):
