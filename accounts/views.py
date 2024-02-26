@@ -71,9 +71,18 @@ class LoginAPIView(generics.GenericAPIView):
 class LogoutAPIView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_serializer_class(self):
+        # Override to return None since no serialization is needed for logout
+        return None
+
+    def get(self, request, *args, **kwargs):
+        # Handle GET request for logging out, but POST is preferred for API views
+        return self.post(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         logout(request)
-        return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Logged out successfully!'}, status=status.HTTP_200_OK)
+
 
 class EmailVerificationAPIView(generics.GenericAPIView):
     permission_classes = [permissions.AllowAny]
