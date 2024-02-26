@@ -7,3 +7,5 @@ urlpatterns = [
     path('logout/', LogoutAPIView.as_view(), name='logout'),
     path('verify-email/', EmailVerificationAPIView.as_view(), name='verify_email'),
 ]
+
+
