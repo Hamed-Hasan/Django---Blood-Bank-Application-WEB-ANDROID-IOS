@@ -28,9 +28,9 @@ SECRET_KEY = config('SECRET_KEY')
 # DEBUG = True
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='https://django-blood-bank-application-web.onrender.com', cast=Csv())
+# ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='https://django-blood-bank-application-web.onrender.com', cast=Csv())
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*", "https://django-blood-bank-application-web.onrender.com"]
 
 
 # Application definition
