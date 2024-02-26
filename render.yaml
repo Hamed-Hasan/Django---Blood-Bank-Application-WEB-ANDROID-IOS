@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: bloodbank
+    env: python
+    plan: starter
+    buildCommand: "pip install -r requirements.txt --noinput"
+    startCommand: "gunicorn bloodbank.wsgi:application --log-file -"
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bloodbank-db
+          property: connectionString
+      - key: DEBUG
+        value: "False"
+    databases:
+      - name: bloodbank-db
