@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block body %}
+<!-- all post starts here ------------------------------------------ -->
+
+
+<section style="display: flex; gap: 30px; flex-wrap: wrap; margin: auto;">
+    {% for book in data %}
+    <div  style="width: 40%;">
+        {% if book.image%}
+        <img src="{{book.image.url}}" class="card-img-top" alt="...">
+        {% else %}
+        <p>No image</p>
+        {% endif %}
+
+    </div>
+    <div class="card" style="width: 18rem;">
+       
+
+        <div class="card-body">
+            <h5 class="card-title"><a style="text-decoration: none;" href="">{{book.title}}</a></h5>
+            <p>{{ book.description | truncatewords:10 }}</p>
+            <h5 class="card-title">Price: {{book.borrowing_price}}৳</h5>
+            {% for cat in book.categories.all %}
+            <p class="bnt btn-primary">Catagory : {{cat.name}}</p>
+            {% endfor %}
+
+            {% if request.user.is_authenticated %}
+            <div>
+                <a style="margin-top: 5px;" href="{% url 'purchase' book.id %}" class="btn btn-primary">Borrow</a>
+            </div>
+
+
+            {% endif %}
+        </div>
+    </div>
+
+
+    {% endfor %}
+
+</section>
+<!-- all post ends here ------------------------------------------------------ -->
+
+{% endblock body %}

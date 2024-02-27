@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+<h4>Welcome ---------- {{user}}</h4>
+<p>Change your pass without old password <a href="{% url 'change_pass2' %}">Change pass without old pass</a></p>
+<p>Update your profile <a href="{% url 'update_profile' %}">Update profile</a></p>
+
+<h1>User purchased books will show here</h1>
+
+
+{% for i in data %}
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">book id</th>
+            <th scope="col">Books name</th>
+            <th scope="col">price</th>
+            <th scope="col">balance after borrow</th>
+            <th scope="col">borrow date</th>
+            <th scope="col">Return Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            
+            <th scope="row">{{ i.id }}</th>
+            <td>{{i.Book.title}}</td>
+            <td>{{i.purchased_book_price}}</td>
+            <td>{{ i.balance_after_purchased }}</td>
+            <td>@{{ i.purchase_date }}</td>
+            <td  class="btn btn-primary"><a style="text-decoration: none;" href="{% url 'return' i.id %}">Return book</a></td>
+        </tr>
+        
+        
+    </tbody>
+</table>
+
+
+{% endfor %}
+
+
+
+<!-- user change form ends  here --------- -->
+
+{% endblock body %}

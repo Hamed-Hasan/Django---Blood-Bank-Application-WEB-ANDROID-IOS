@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>This is signup page</h1>
+
+<!-- messages to the user Starts -------------------------- -->
+{% if messages  %}
+<h1>Account Created Successfully</h1>
+{% endif %}
+<!-- Messages to the user ends here ---------- -->
+{% load crispy_forms_tags %}
+<form method="post" action="" style="width: 50%; margin: auto;" novalidate>
+  {% csrf_token %}
+  {% for fm  in form %}
+  <!-- {{fm | as_crispy_field }} -->
+  {{fm.label_tag}}
+  {{fm}}
+  {{fm.errors |striptags}}
+  {% endfor %}
+  <br>
+    <button class="btn btn-primary" type="submit">Sign up</button>
+    <br>
+
+    <small>Already have an account? <a href="{% url 'loginpage' %}">Login</a></small>
+</form>
+
+    
+{% endblock body %}

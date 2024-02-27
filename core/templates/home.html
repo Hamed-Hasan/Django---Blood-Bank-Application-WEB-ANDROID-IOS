@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block body %}
+<!-- catagory wise filte section stars here --------------------- -->
+<h3 style="margin-top: 20px;">Browse By Book Category</h3>
+
+
+<section style="display: flex;">
+
+    {% for i in catagory_details %}
+
+    <div style="margin-top: 20px; gap: 20px; scroll-behavior: smooth;">
+        <nav style="border: 10px; gap: 20px; " aria-label="...">
+            <ul class="pagination pagination-lg">
+
+                <li style="margin-left: 20px; scroll-behavior: smooth;" class="page-item"><a class="page-link"
+                        href="{% url 'books_filter' i.slug %}">{{i.name}}</a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+    {% endfor %}
+
+
+
+</section>
+<!-- catagory wise filter section ends here ------------------------- -->
+
+
+
+
+<!-- all post starts here ------------------------------------------ -->
+<div style="margin-left: 10px; display: flex; margin-top: 20px; margin-bottom: 20px; gap: 5px; ">
+    <h2 style="color: blue;">Total results found : </h2>
+    <h2 style="color: black;"></h2>
+</div>
+
+<section style="display: flex; gap: 30px; flex-wrap: wrap;">
+
+    {% for i in book_model_detials %}
+
+
+    <div class="card" style="width: 18rem;">
+        {% if i.image%}
+        <img src="{{i.image.url}}" class="card-img-top" alt="...">
+        {% else %}
+        <p>No image</p>
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title"><a style="text-decoration: none;" href="">{{i.title}}</a></h5>
+            <p>{{ i.description | truncatewords:10  }}</p>
+            <h5 class="card-title">Price: {{i.borrowing_price}}৳</h5>
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+            {% if request.user.is_authenticated %}
+            <div>
+                <a style="margin-top: 5px;" href="{% url 'purchase' i.id %}" class="btn btn-primary">Borrow</a>
+            </div>
+            <div>
+                <a style="margin-top: 5px;" href="{% url 'details' i.id %}" class="btn btn-primary">View
+                    Details</a>
+            </div>
+            
+            {% endif %}
+        </div>
+    </div>
+
+    {% endfor %}
+
+
+</section>
+<!-- all post ends here ------------------------------------------------------ -->
+
+
+
+
+
+{% endblock body %}
