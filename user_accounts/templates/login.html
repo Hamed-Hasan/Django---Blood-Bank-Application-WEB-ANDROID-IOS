@@ -1,26 +1,44 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<h1>This is login page</h1>
 
-{% if form.non_field_errors %}
-{% for er in form.non_field_errors %}
-<p class="bg-primary" style="margin: auto; text-align: center;">{{er}}</p>
-{% endfor %}
-{% endif %}
 
-{% load crispy_forms_tags %}
-<form method="post" action="" style="width: 50%; margin: auto;" novalidate>
-  {% csrf_token %}
-  {% for fm  in form %}
-  <!-- {{fm | as_crispy_field }} -->
-  {{fm.label_tag}}
-  {{fm}}
-  {{fm.errors |striptags}}
-  {% endfor %}
-  <br>
-    <button class="btn btn-primary" type="submit">Login</button>
-</form>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    
+      <div class="col-12">
+          <div class="card shadow">
+              <div class="card-body mb-5">
+                <h1 class="text-center mt-5">Login</h1>
+
+                {% if form.non_field_errors %}
+                {% for er in form.non_field_errors %}
+                <p class="bg-primary" style="margin: auto; text-align: center;">{{er}}</p>
+                {% endfor %}
+                {% endif %}
+
+                {% load crispy_forms_tags %}
+                <form method="post" action="" style="width: 30%; margin: auto;" novalidate>
+                  {% csrf_token %}
+                  {% for fm  in form %}
+                  <!-- {{fm | as_crispy_field }} -->
+                  {{fm.label_tag}}
+                  {{fm}}
+                  {{fm.errors |striptags}}
+                  {% endfor %}
+                  <br>
+                  <button type="submit" class="btn btn-primary btn-block" style="width: 100% !important;">Login</button>
+
+                </form>
+                
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
 
     
 {% endblock body %}
