@@ -2,47 +2,43 @@
 
 {% block body %}
 
+<div class="container my-4">
+    <div class="text-center">
+        <h4 class="mb-3">Welcome, {{ user }}</h4>
+        <p class="mb-1"><a class="btn btn-info" href="{% url 'change_pass2' %}">Change Password Without Old Password</a></p>
+        <p><a class="btn btn-success" href="{% url 'update_profile' %}">Update Profile</a></p>
+    </div>
 
-<h4>Welcome ---------- {{user}}</h4>
-<p>Change your pass without old password <a href="{% url 'change_pass2' %}">Change pass without old pass</a></p>
-<p>Update your profile <a href="{% url 'update_profile' %}">Update profile</a></p>
+    <h1 class="text-center mt-4 mb-4">User Purchased Books</h1>
 
-<h1>User purchased books will show here</h1>
-
-
-{% for i in data %}
-
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">book id</th>
-            <th scope="col">Books name</th>
-            <th scope="col">price</th>
-            <th scope="col">balance after borrow</th>
-            <th scope="col">borrow date</th>
-            <th scope="col">Return Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            
-            <th scope="row">{{ i.id }}</th>
-            <td>{{i.Book.title}}</td>
-            <td>{{i.purchased_book_price}}</td>
-            <td>{{ i.balance_after_purchased }}</td>
-            <td>@{{ i.purchase_date }}</td>
-            <td  class="btn btn-primary"><a style="text-decoration: none;" href="{% url 'return' i.id %}">Return book</a></td>
-        </tr>
-        
-        
-    </tbody>
-</table>
-
-
-{% endfor %}
-
-
-
-<!-- user change form ends  here --------- -->
+    {% for i in data %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Book ID</th>
+                    <th scope="col">Book Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Balance After Borrow</th>
+                    <th scope="col">Borrow Date</th>
+                    <th scope="col">Return Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">{{ i.id }}</th>
+                    <td>{{ i.Book.title }}</td>
+                    <td>{{ i.purchased_book_price }}</td>
+                    <td>{{ i.balance_after_purchased }}</td>
+                    <td>{{ i.purchase_date }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'return' i.id %}" style="text-decoration: none;">Return Book</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock body %}

@@ -10,7 +10,7 @@
                 <p style="font-size: 1.25rem; line-height: 1.5; color: #555;">
                     Explore our extensive collection and find your next favorite read. From timeless classics to modern bestsellers, immerse yourself in stories that inspire and entertain.
                 </p>
-                <a href="#browse-books" class="btn btn-primary" style="padding: 10px 20px; font-size: 1rem; margin-top: 20px;">Browse Books</a>
+                <a href="#purchase" class="btn btn-primary" style="padding: 10px 20px; font-size: 1rem; margin-top: 20px;">Browse Books</a>
             </div>
             <div class="col-12 col-lg-6 mt-4 mt-lg-0">
                 <img src="https://images.unsplash.com/photo-1544716278-e513176f20b5?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Books Image" class="img-fluid rounded">
@@ -39,18 +39,17 @@
 
 <section class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for i in book_model_detials %}
+        {% for i in page_obj %}
         <div class="col">
             <div class="card h-100 shadow-sm">
                 {% if i.image %}
-                <img src="{{ i.image.url }}" class="card-img-top" style="height: 440px" alt="Book Image">
+                <img src="{{ i.image.url }}" class="card-img-top" alt="Book Image" style="height: 440px;">
                 {% else %}
-                <img src="{{ i.image.url }}" class="card-img-top" style="height: 150px; object-fit: cover;" alt="Book Image">
-
+                <img src="{{ i.image.url }}" class="card-img-top" alt="Book Image" style="height: 150px; object-fit: cover;">
                 {% endif %}
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">{{ i.title }}</h5>
-                    <p class="card-text flex-grow-1">{{ i.description | truncatewords:10 }}</p>
+                    <p class="card-text flex-grow-1">{{ i.description|truncatewords:10 }}</p>
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <h5 class="mb-0">Price: {{ i.borrowing_price }}৳</h5>
                         {% if request.user.is_authenticated %}
@@ -62,11 +61,68 @@
                     </div>
                 </div>
             </div>
-            
         </div>
         {% endfor %}
     </div>
+    <!-- Pagination Controls -->
+<div class="d-flex justify-content-center my-5">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    &laquo;&laquo;
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    &laquo;
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo;&laquo;</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+            {% if num == page_obj.number %}
+            <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
+            </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    &raquo;
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                    &raquo;&raquo;
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">&raquo;&raquo;</span>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
 </section>
+
 <!-- All Posts Section Ends Here -->
 
 
