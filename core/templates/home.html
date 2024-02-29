@@ -36,21 +36,23 @@
 
 <!-- Hero Section Ends Here -->
 
-<!-- Category Wise Filter Section Starts Here -->
-<h3 class="text-center mt-4">Browse By Book Category</h3>
-<section class="d-flex flex-wrap justify-content-center my-3">
-  {% for category in category_details %}
-  <div class="m-2">
-    <a
-      class="btn btn-outline-primary btn-lg"
-      href="{% url 'books_filter' category.slug %}"
-      role="button"
-      >{{ category.name }}</a
-    >
+<!-- Category Wise Filter Section with Search Bar -->
+<section class="d-flex justify-content-between align-items-center my-3">
+  <div class="d-flex flex-wrap">
+      {% for category in category_details %}
+      <div class="m-2">
+        <a class="btn btn-outline-primary btn-lg" href="{% url 'home' category.slug %}" role="button">{{ category.name }}</a>
+      </div>
+      {% endfor %}
   </div>
-  {% endfor %}
+  <div>
+      <form class="d-flex" method="get">
+          <input class="form-control me-2" type="search" placeholder="Search Books" aria-label="Search" name="q" value="{{ query }}">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+  </div>
 </section>
-<!-- Category Wise Filter Section Ends Here -->
+
 
 <!-- All Posts Section Starts Here -->
 <div class="mt-4 mb-2 text-center">
