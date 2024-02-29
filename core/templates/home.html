@@ -41,22 +41,28 @@
     <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for i in book_model_detials %}
         <div class="col">
-            <div class="card h-100">
+            <div class="card h-100 shadow-sm">
                 {% if i.image %}
-                <img src="{{ i.image.url }}" class="card-img-top" alt="Book Image">
+                <img src="{{ i.image.url }}" class="card-img-top" style="height: 440px" alt="Book Image">
                 {% else %}
-                <img src="path/to/default-image.jpg" class="card-img-top" alt="Default Image">
+                <img src="{{ i.image.url }}" class="card-img-top" style="height: 150px; object-fit: cover;" alt="Book Image">
+
                 {% endif %}
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title">{{ i.title }}</h5>
-                    <p class="card-text">{{ i.description | truncatewords:10 }}</p>
-                    <h5 class="card-title">Price: {{ i.borrowing_price }}৳</h5>
-                    {% if request.user.is_authenticated %}
-                    <a href="{% url 'purchase' i.id %}" class="btn btn-primary">Borrow</a>
-                    <a href="{% url 'details' i.id %}" class="btn btn-secondary mt-2">View Details</a>
-                    {% endif %}
+                    <p class="card-text flex-grow-1">{{ i.description | truncatewords:10 }}</p>
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <h5 class="mb-0">Price: {{ i.borrowing_price }}৳</h5>
+                        {% if request.user.is_authenticated %}
+                        <div>
+                            <a href="{% url 'purchase' i.id %}" class="btn btn-primary">Borrow</a>
+                            <a href="{% url 'details' i.id %}" class="btn btn-outline-secondary mt-2">View Details</a>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
+            
         </div>
         {% endfor %}
     </div>
